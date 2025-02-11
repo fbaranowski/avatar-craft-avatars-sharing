@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  sharing:
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile
+    ports:
+      - "8300:8300"
+    env_file:
+      - .env
+    networks:
+      - sharing-network
+      - mongo-network
+
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    networks:
+      - mongo-network
+
+networks:
+  sharing-network:
+
+  mongo-network:
